@@ -1,34 +1,41 @@
 import 'package:flutter/material.dart';
 
+import 'markdown_types.dart';
+
+export 'markdown_types.dart';
+
 /// Use this class for converting String to [ResultMarkdown]
 class FormatMarkdown {
   /// Convert [data] part into [ResultMarkdown] from [type].
   /// Use [fromIndex] and [toIndex] for converting part of [data]
   /// [titleSize] is used for markdown titles
-  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
+  static ResultMarkdown convertToMarkdown(
+      MarkdownType type, String data, int fromIndex, int toIndex,
       {int titleSize = 1}) {
     late String changedData;
     late int replaceCursorIndex;
 
     switch (type) {
       case MarkdownType.bold:
-        changedData = '**${data.substring(fromIndex, toIndex)}**';
+        changedData = ' **${data.substring(fromIndex, toIndex).trim()}** ';
         replaceCursorIndex = 2;
         break;
       case MarkdownType.italic:
-        changedData = '_${data.substring(fromIndex, toIndex)}_';
+        changedData = ' _${data.substring(fromIndex, toIndex).trim()}_ ';
         replaceCursorIndex = 1;
         break;
       case MarkdownType.strikethrough:
-        changedData = '~~${data.substring(fromIndex, toIndex)}~~';
+        changedData = ' ~~${data.substring(fromIndex, toIndex).trim()}~~ ';
         replaceCursorIndex = 2;
         break;
       case MarkdownType.link:
-        changedData = '[${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData =
+            '[${data.substring(fromIndex, toIndex).trim()}](${data.substring(fromIndex, toIndex)})';
         replaceCursorIndex = 3;
         break;
       case MarkdownType.title:
-        changedData = "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
+        changedData =
+            "${"#" * titleSize} ${data.substring(fromIndex, toIndex)}";
         replaceCursorIndex = 0;
         break;
       case MarkdownType.list:
@@ -41,7 +48,7 @@ class FormatMarkdown {
         replaceCursorIndex = 0;
         break;
       case MarkdownType.code:
-        changedData = '```${data.substring(fromIndex, toIndex)}```';
+        changedData = ' ```${data.substring(fromIndex, toIndex).trim()}``` ';
         replaceCursorIndex = 3;
         break;
       case MarkdownType.blockquote:
@@ -54,19 +61,24 @@ class FormatMarkdown {
         replaceCursorIndex = 0;
         break;
       case MarkdownType.separator:
-        changedData = '\n------\n${data.substring(fromIndex, toIndex)}';
+        changedData = '\n------\n${data.substring(fromIndex, toIndex)} ';
         replaceCursorIndex = 0;
         break;
       case MarkdownType.image:
-        changedData = '![${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
+        changedData =
+            '![${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
         replaceCursorIndex = 3;
         break;
     }
 
     final cursorIndex = changedData.length;
 
-    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length),
-        cursorIndex, replaceCursorIndex);
+    return ResultMarkdown(
+        data.substring(0, fromIndex) +
+            changedData +
+            data.substring(toIndex, data.length),
+        cursorIndex,
+        replaceCursorIndex);
   }
 }
 
@@ -83,45 +95,6 @@ class ResultMarkdown {
 
   /// Return [ResultMarkdown]
   ResultMarkdown(this.data, this.cursorIndex, this.replaceCursorIndex);
-}
-
-/// Represent markdown possible type to convert
-enum MarkdownType {
-  /// For **bold** text
-  bold,
-
-  /// For _italic_ text
-  italic,
-
-  /// For ~~strikethrough~~ text
-  strikethrough,
-
-  /// For [link](https://flutter.dev)
-  link,
-
-  /// For # Title or ## Title or ### Title
-  title,
-
-  /// For :
-  ///   * Item 1
-  ///   * Item 2
-  ///   * Item 3
-  list,
-
-  /// For ```code``` text
-  code,
-
-  /// For :
-  ///   > Item 1
-  ///   > Item 2
-  ///   > Item 3
-  blockquote,
-
-  /// For adding ------
-  separator,
-
-  /// For ![Alt text](link)
-  image,
 }
 
 /// Add data to [MarkdownType] enum

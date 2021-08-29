@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:markdown_editable_textinput/format_markdown.dart';
-import 'package:markdown_editable_textinput/markdown_text_input.dart';
+import 'package:markdown_io/markdown_io.dart';
 
 void main() => runApp(MyApp());
 
@@ -39,9 +38,10 @@ class _MyAppState extends State<MyApp> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
-                        MarkdownTextInput(
-                          (String value) => setState(() => description = value),
-                          description,
+                        MarkdownIo(
+                          onChanged: (String value) =>
+                              setState(() => description = value),
+                          initialData: description,
                           label: 'Description',
                           maxLines: 10,
                           actions: MarkdownType.values,
