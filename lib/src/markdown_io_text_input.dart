@@ -14,6 +14,9 @@ class MarkdownIoTextInput extends StatelessWidget {
   /// Decoration for the formField
   final InputDecoration? decoration;
 
+  /// style for the TextFormField
+  final TextStyle? style;
+
   /// Validator for the TextFormField
   final String? Function(String? value)? validator;
 
@@ -37,6 +40,7 @@ class MarkdownIoTextInput extends StatelessWidget {
     this.label = '',
     this.decoration,
     this.validator,
+    this.style,
     this.textDirection = TextDirection.ltr,
     this.maxLines = 10,
     this.actions = const [
@@ -59,10 +63,14 @@ class MarkdownIoTextInput extends StatelessWidget {
       controller: controller,
       validator: validator,
       onChanged: onTextChanged,
+      textDirection: textDirection,
+      style: style ??
+          TextStyle(
+            color: Theme.of(context).accentColor,
+          ),
+      decoration: decoration ?? _defaultDecoration(context),
       textInputAction: TextInputAction.newline,
       textCapitalization: TextCapitalization.sentences,
-      textDirection: textDirection,
-      decoration: decoration ?? _defaultDecoration(context),
     );
   }
 

@@ -11,6 +11,8 @@ class MarkdownIoTextToolbar extends StatelessWidget {
   const MarkdownIoTextToolbar({
     Key? key,
     required this.controller,
+    this.backgroundColor,
+    this.buttonColor,
     this.actions = const [
       MarkdownType.bold,
       MarkdownType.italic,
@@ -24,6 +26,12 @@ class MarkdownIoTextToolbar extends StatelessWidget {
   final MarkdownIoTextController controller;
 
   ///
+  final Color? backgroundColor;
+
+  ///
+  final Color? buttonColor;
+
+  ///
   final List<MarkdownType> actions;
 
   @override
@@ -31,9 +39,8 @@ class MarkdownIoTextToolbar extends StatelessWidget {
     return SizedBox(
       height: 44,
       child: Material(
-        color: Theme.of(context).cardColor,
-        borderRadius: const BorderRadius.only(
-            bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
+        color: backgroundColor ?? Theme.of(context).cardColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
         child: ListView(
           scrollDirection: Axis.horizontal,
           children: actions.map((type) {
@@ -42,13 +49,15 @@ class MarkdownIoTextToolbar extends StatelessWidget {
                     child: Expandable(
                       key: Key('H#_button'),
                       collapsed: ExpandableButton(
-                        child: const Center(
+                        child: Center(
                           child: Padding(
                             padding: EdgeInsets.all(10),
                             child: Text(
                               'H#',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700),
+                                  color: buttonColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700),
                             ),
                           ),
                         ),
@@ -67,6 +76,7 @@ class MarkdownIoTextToolbar extends StatelessWidget {
                                   child: Text(
                                     'H$i',
                                     style: TextStyle(
+                                        color: buttonColor,
                                         fontSize: (18 - i).toDouble(),
                                         fontWeight: FontWeight.w700),
                                   ),
@@ -90,7 +100,10 @@ class MarkdownIoTextToolbar extends StatelessWidget {
                     onTap: () => controller.formatSelection(type),
                     child: Padding(
                       padding: EdgeInsets.all(10),
-                      child: Icon(type.icon),
+                      child: Icon(
+                        type.icon,
+                        color: buttonColor,
+                      ),
                     ),
                   );
           }).toList(),

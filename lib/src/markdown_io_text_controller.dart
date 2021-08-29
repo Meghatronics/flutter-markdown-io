@@ -4,6 +4,9 @@ import 'format_markdown.dart';
 
 ///
 class MarkdownIoTextController extends TextEditingController {
+  // ignore: public_member_api_docs
+  MarkdownIoTextController({String? text}) : super(text: text);
+
   void _onTap(MarkdownType type, {int titleSize = 1}) {
     final textSelection = selection;
     final basePosition = textSelection.baseOffset;
